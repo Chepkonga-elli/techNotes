@@ -1,10 +1,22 @@
 const express = require('express')
 const app = express()
 const path = require('path')
+const {logger} = require('./middleware/logger')
+const cors = require('cors')
+const corsOptions = require('./config/corsOptions')
+const  errorHandler  = require('./middleware/errorHandler')
+const cookieParser = require('cookie-parser')
+const PORT = process.env.PORT || 3500
 
-app.use(express.json)
+app.use(logger)
 
-app.use('/', express.static(path.join(__dirname, 'public')))
+app.use(cors(corsOptions))
+
+app.use(express.json())
+
+app.use(cookieParser())
+
+app.use('/', express.static(path.join(__dirname, '/public')))
 
 app.use('/', require('./routes/root'))
 
@@ -20,6 +32,8 @@ app.all('*', (req, res) => {
 })
 
 
-const PORT = process.env.PORT || 3500
+app.use(errorHandler)
+
+
 
 app.listen(PORT, () => console.log(`server running on port ${PORT}`))
