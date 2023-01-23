@@ -1,18 +1,20 @@
-const { string } = require('i/lib/util')
+
+
 const mongoose = require('mongoose')
+const { Schema } = mongoose;
 
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
     username: {
-        type: string,
+        type: String,
         required: true
     },
     password: {
-        type: string,
+        type: String,
         required: true
     },
     roles: [{
-        type: string,
+        type: String,
         default: "Employee"
     }],
     active: {
